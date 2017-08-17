@@ -1,0 +1,6 @@
+uwsgi:
+  lookup:
+    pkg: myuwsgi
+    conf_file: /usr/local/etc/uwsgi/uwsgi.conf
+  config:
+    key: othervalue

@@ -1,0 +1,9 @@
+name: uwsgi
+os: RedHat, CentOS, Ubuntu, Debian
+os_family: RedHat, Debian
+version: 201708
+release: 1
+summary: SaltStack formula for installing and configuring uWSGI
+description: SaltStack formula for installing and configuring uWSGI
+top_level_dir: uwsgi
+recommended: 
