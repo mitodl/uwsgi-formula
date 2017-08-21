@@ -13,9 +13,8 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
-  
   config.vm.define "debian" do |debian|
-    debian.vm.box = "debian/jessie64"
+    debian.vm.box = "debian/stretch64"
   end
 
   config.vm.define "centos" do |centos|
@@ -23,9 +22,9 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "ubuntu" do |ubuntu|
-    ubuntu.vm.box = "ubuntu/trusty64"
+    ubuntu.vm.box = "ubuntu/xenial64"
   end
-  
+
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -83,9 +82,7 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
   config.vm.provision "shell", path: "scripts/vagrant_setup.sh"
-  
   config.vm.provision "shell", path: "scripts/gitfs_deps.sh"
-  
   config.vm.provision :salt do |salt|
     salt.minion_config = 'minion.conf'
     salt.bootstrap_options = '-U -Z'
@@ -94,5 +91,4 @@ Vagrant.configure(2) do |config|
     salt.colorize = true
     salt.verbose = true
   end
-  
 end

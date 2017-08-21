@@ -1,14 +1,15 @@
 {% set uwsgi = salt.grains.filter_by({
     'default': {
-        'pkg': 'uwsgi',
+        'pkgs': [
+            'python3',
+            'curl',
+            'gcc'
+        ],
         'service': 'uwsgi',
         'conf_file': '/etc/uwsgi/uwsgi.conf',
-        'config': {
-            'key': 'value',
-        },
     },
     'Debian': {
     },
     'RedHat': {
     },
-}, grain='os_family', merge=salt.pillar.get('uwsgi:overrides), base='default') %}
+}, grain='os_family', merge=salt.pillar.get('uwsgi:overrides'), base='default') %}

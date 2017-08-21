@@ -1,15 +1,12 @@
 {% from "uwsgi/map.jinja" import uwsgi with context %}
 
 include:
-  - .install
   - .service
 
-uwsgi-config:
+{% for app_name, app_config in salt.pillar.get('uwsgi:apps', {}).items() %}
+manage_config_for_{{ app_name }}:
   file.managed:
-    - name: {{ uwsgi.conf_file }}
-    - source: salt://uwsgi/templates/conf.jinja
-    - template: jinja
-    - watch_in:
-      - service: uwsgi_service_running
-    - require:
-      - pkg: uwsgi
+    - name: /etc/uwsgi/vassals/{{ app_name }}.yml
+    - contents: |
+        {{ app_config|yaml(False)|indent(8) }}
+{% endfor %}
