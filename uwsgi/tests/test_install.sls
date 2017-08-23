@@ -6,3 +6,8 @@ test_{{pkg}}_is_installed:
     - name: {{ pkg }}
     - is_installed: True
 {% endfor %}
+
+test_uwsgi_emperor_running:
+  testinfra.service:
+    - name: {{ uwsgi.service }}
+    - is_running: True
