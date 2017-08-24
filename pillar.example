@@ -1,6 +1,14 @@
+# -*- mode: yaml -*-
 uwsgi:
-  lookup:
-    pkg: myuwsgi
-    conf_file: /usr/local/etc/uwsgi/uwsgi.conf
-  config:
-    key: othervalue
+  emperor_config:
+    uwsgi:
+      logto: /var/log/uwsgi/emperor.log
+      vassals-set:
+        - 'logto=/var/log/uwsgi/apps/%n.log'
+        - 'uid=uwsgi'
+        - 'gid=uwsgi'
+        - 'thunder-lock=true'
+  apps:
+    testapp:
+      uwsgi:
+        http: '127.0.0.1:8000'

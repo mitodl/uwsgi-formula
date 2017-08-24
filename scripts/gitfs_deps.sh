@@ -19,5 +19,5 @@ else
     curl -L "https://bootstrap.pypa.io/get-pip.py" > get_pip.py
     sudo python get_pip.py
     rm get_pip.py
-    sudo pip install gitpython
+    sudo pip install gitpython testinfra
 fi
