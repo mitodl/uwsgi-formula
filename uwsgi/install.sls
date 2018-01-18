@@ -60,6 +60,8 @@ create_uwsgi_service_definition:
     - name: systemctl daemon-reload
     - onchanges:
         - file: create_uwsgi_service_definition
+    - onchanges_in:
+        - service: uwsgi_service_running
 
 create_log_directory_for_uwsgi:
   file.directory:
