@@ -16,7 +16,7 @@ install_global_pip_executable:
         sudo python3 get_pip.py
         rm get_pip.py
     - reload_modules: True
-    - unless: which pip3
+    - creates: {{ uwsgi.pip_path }}
     - reload_modules: True
     - require:
         - pkg: install_os_package_dependencies
@@ -24,7 +24,7 @@ install_global_pip_executable:
 install_uwsgi:
   pip.installed:
     - name: uwsgi
-    - bin_env: /usr/local/bin/pip3
+    - bin_env: {{ uwsgi.pip_path }}
     - require_in:
         - service: uwsgi_service_running
     - require:
