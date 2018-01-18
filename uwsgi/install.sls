@@ -50,7 +50,10 @@ create_uwsgi_service_user:
 create_uwsgi_service_definition:
   file.managed:
     - name: /etc/systemd/system/{{ uwsgi.service }}.service
-    - source: salt://uwsgi/files/uwsgi.service
+    - source: salt://uwsgi/templates/uwsgi.service
+    - template: jinja
+    - context:
+        uwsgi_path: {{ uwsgi.uwsgi_path }}
     - require_in:
         - service: uwsgi_service_running
   cmd.run:
