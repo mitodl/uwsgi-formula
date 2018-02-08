@@ -9,7 +9,7 @@ install_os_package_dependencies:
     - pkgs: {{ uwsgi.pkgs }}
     - reload_modules: True
 
-install_global_pip_executable:
+install_global_pip_executable_for_uwsgi:
   cmd.run:
     - name: |
         curl -L "https://bootstrap.pypa.io/get-pip.py" > get_pip.py
@@ -28,7 +28,7 @@ install_uwsgi:
     - require_in:
         - service: uwsgi_service_running
     - require:
-        - cmd: install_global_pip_executable
+        - cmd: install_global_pip_executable_for_uwsgi
     {% if uwsgi_build_env -%}
     - env_vars:
         {%- for var, value in uwsgi_build_env.items() %}
