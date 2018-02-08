@@ -26,6 +26,6 @@ manage_config_for_{{ app_name }}:
     - source: salt://uwsgi/templates/conf.ini.jinja
     - template: jinja
     - context:
-        settings: {{ app_config }}
+        settings: {{ app_config|yaml }}
     - makedirs: True
 {% endfor %}
