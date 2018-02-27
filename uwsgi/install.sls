@@ -56,6 +56,8 @@ create_uwsgi_service_definition:
         uwsgi_path: {{ uwsgi.uwsgi_path }}
     - require_in:
         - service: uwsgi_service_running
+    - require:
+        - user: create_uwsgi_service_user
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
