@@ -33,7 +33,8 @@
        'harakiri': '60',
        'py-callos-afterfork': 'true',
        'buffer-size': '65535',
-       'post-buffering': '65535'
+       'post-buffering': '65535',
+       'auto-procname': 'true'
    }
 %}
 {% if not emperor_config %}
