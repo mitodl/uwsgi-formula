@@ -28,7 +28,7 @@
    }
 %}
 {% if not emperor_config %}
-{% set app_config_defaults['master'] = 'true' %}
+{% do app_config_defaults.update({'master': 'true'}) %}
 {% endif %}
 
 include:
