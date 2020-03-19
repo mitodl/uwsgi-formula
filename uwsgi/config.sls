@@ -54,7 +54,7 @@ write_additional_configs_for_emperor:
 #}
 {% for app_name, app_config_overrides in salt.pillar.get('uwsgi:apps', {}).items() %}
 {% set app_config = app_config_defaults.copy() %}
-{% app_config.update(app_config_overrides) %}
+{% do app_config.update(app_config_overrides) %}
 manage_config_for_{{ app_name }}:
   file.managed:
     - name: /etc/uwsgi/vassals/{{ app_name }}.ini
