@@ -6,29 +6,31 @@
    https://www.techatbloomberg.com/blog/configuring-uwsgi-production-deployment/
 #}
 {% set app_config_defaults = {
-       'strict': 'true',
-       'enable-threads': 'true',
-       'vacuum': 'true',
-       'single-interpreter': 'true',
-       'die-on-term': 'true',
-       'need-app': 'true',
-       'disable-logging': 'true',
-       'log-4xx': 'true',
-       'log-5xx': 'true',
-       'max-requests': '1000',
-       'max-worker-lifetime': '3600',
-       'processes': '2',
-       'reload-on-rss': '200',
-       'worker-reload-mercy': '60',
-       'harakiri': '60',
-       'py-callos-afterfork': 'true',
-       'buffer-size': '65535',
-       'post-buffering': '65535',
-       'auto-procname': 'true'
+       'uwsgi': {
+           'strict': 'true',
+           'enable-threads': 'true',
+           'vacuum': 'true',
+           'single-interpreter': 'true',
+           'die-on-term': 'true',
+           'need-app': 'true',
+           'disable-logging': 'true',
+           'log-4xx': 'true',
+           'log-5xx': 'true',
+           'max-requests': '1000',
+           'max-worker-lifetime': '3600',
+           'processes': '2',
+           'reload-on-rss': '200',
+           'worker-reload-mercy': '60',
+           'harakiri': '60',
+           'py-callos-afterfork': 'true',
+           'buffer-size': '65535',
+           'post-buffering': '65535',
+           'auto-procname': 'true'
+       }
    }
 %}
 {% if not emperor_config %}
-{% do app_config_defaults.update({'master': 'true'}) %}
+{% do app_config_defaults['uwsgi'].update({'master': 'true'}) %}
 {% endif %}
 
 include:
@@ -54,7 +56,14 @@ write_additional_configs_for_emperor:
 #}
 {% for app_name, app_config_overrides in salt.pillar.get('uwsgi:apps', {}).items() %}
 {% set app_config = app_config_defaults.copy() %}
-{% do app_config.update(app_config_overrides) %}
+{% do app_config['uwsgi'].update(app_config_overrides.get('uwsgi', {})) %}
+{% set keys = app_config_overrides.keys() %}
+{% for key in keys %}
+{% if key != 'uwsgi' %}
+{% do app_config.update([(key, app_config_overrides[key])]) %}
+{% endif %}
+{% endfor %}
+
 manage_config_for_{{ app_name }}:
   file.managed:
     - name: /etc/uwsgi/vassals/{{ app_name }}.ini
