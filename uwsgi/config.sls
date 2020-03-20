@@ -30,7 +30,7 @@
    }
 %}
 {% if not emperor_config %}
-{% do app_config_defaults.update({'master': 'true'}) %}
+{% do app_config_defaults['uwsgi'].update({'master': 'true'}) %}
 {% endif %}
 
 include:
@@ -56,7 +56,14 @@ write_additional_configs_for_emperor:
 #}
 {% for app_name, app_config_overrides in salt.pillar.get('uwsgi:apps', {}).items() %}
 {% set app_config = app_config_defaults.copy() %}
-{% do app_config['uwsgi'].update(app_config_overrides['uwsgi']) %}
+{% do app_config['uwsgi'].update(app_config_overrides.get('uwsgi', {})) %}
+{% set keys = app_config_overrides.keys() %}
+{% for key in keys %}
+{% if key != 'uwsgi' %}
+{% do app_config.update([(key, app_config_overrides[key])]) %}
+{% endif %}
+{% endfor %}
+
 manage_config_for_{{ app_name }}:
   file.managed:
     - name: /etc/uwsgi/vassals/{{ app_name }}.ini
