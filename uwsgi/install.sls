@@ -71,3 +71,13 @@ create_log_directory_for_uwsgi:
     - makedirs: True
     - user: {{ uwsgi.user }}
     - group: {{ uwsgi.user }}
+    - require_in:
+        - service: uwsgi_service_running
+
+create_empty_emperor_log_file:
+  file.managed:
+    - name: /var/log/uwsgi/emperor.log
+    - user: {{ uwsgi.user }}
+    - group: {{ uwsgi.user }}
+    - require_in:
+        - service: uwsgi_service_running
